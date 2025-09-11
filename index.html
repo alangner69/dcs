@@ -26,42 +26,87 @@
     <script type="module" crossorigin src="/assets/index-NvbEc8tw.js?v=5"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-CkzHfQyq.css">
     <style>
-      /* Autumn Forest Background - Apply to HTML instead of body */
-      html {
-        background-image: url('/autumn-forest-bg.png') !important;
-        background-attachment: fixed !important;
-        background-position: center !important;
-        background-repeat: no-repeat !important;
-        background-size: cover !important;
-        min-height: 100vh !important;
-      }
-      
-      body {
+      /* Clean slate - transparent backgrounds */
+      html, body {
         background: transparent !important;
+        margin: 0;
+        padding: 0;
       }
       
-      /* Content overlay for text readability */
+      /* Dedicated Autumn Forest Background Layer - React can't touch this! */
+      #site-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100vh;
+        background-image: url('./autumn-forest-bg.png?v=5');
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        z-index: 0;
+        pointer-events: none;
+      }
+      
+      /* NUCLEAR OPTION: Force ALL React containers transparent */
+      #root, #root > div, #root > main, #root > section, 
+      #root div, #root main, #root section,
+      div[class*="App"], div[class*="app"], div[class*="container"], div[class*="wrapper"],
+      div[style*="height"], div[style*="min-height"] {
+        background: transparent !important;
+        background-color: transparent !important;
+      }
+      
+      /* Ultra-aggressive: Target ANY div that might have background styles */
+      div, main, section, article, aside {
+        background: transparent !important;
+        background-color: transparent !important;
+      }
+      
+      /* Override common CSS framework background utilities */
+      .bg-white, .bg-gray-50, .bg-gray-100, .bg-neutral-50,
+      [class*="bg-"], [style*="background:"], [style*="background-color:"] {
+        background: transparent !important;
+        background-color: transparent !important;
+      }
+      
+      /* Target specific full-height containers that React commonly creates */
+      [style*="height: 100vh"], [style*="min-height: 100vh"],
+      [style*="height:100vh"], [style*="min-height:100vh"],
+      [style*="height: 100%"], [style*="min-height: 100%"] {
+        background: transparent !important;
+        background-color: transparent !important;
+      }
+      
+      /* React app container - positioned above background with subtle overlay */
       #root {
-        background-color: rgba(255, 255, 255, 0.1) !important;
+        position: relative;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.05) !important;
         min-height: 100vh;
       }
       
       /* Mobile optimization - disable fixed background on smaller screens */
       @media (max-width: 768px) {
-        body {
+        #site-bg {
           background-attachment: scroll;
         }
       }
       
       /* Respect user motion preferences */
       @media (prefers-reduced-motion: reduce) {
-        body {
+        #site-bg {
           background-attachment: scroll;
         }
       }
     </style>
   </head>
   <body>
+    <!-- Dedicated Background Layer - React Cannot Override This -->
+    <div id="site-bg" aria-hidden="true"></div>
     <div id="root"></div>
     
     <!-- Photos Section -->
